@@ -17,7 +17,7 @@ def generate_fixed_mask(height, width, height_ratio, width_ratio):
     h_end = int(h_start + height_ratio * height) 
     w_start = int((1-width_ratio) / 2.0 * width)
     w_end = int(w_start + width_ratio * width) 
-    return mask*255
+    return mask[h_start:h_end,w_start:w_end]*255 # or is it the other way around???
 
 
 #annotation_path = "inputs/annotations/bmx-trees"
@@ -42,7 +42,6 @@ def main():
     
     # write black and white masks
     for annt_path in annotation_list:
-        img_path = "%s/%s.jpg" % (img_folder, annt_path.split("/")[-1].split(".")[0])
         mask_path = "%s/%s" % (mask_folder, annt_path.split("/")[-1])
         print(mask_path)
         if fixed:
