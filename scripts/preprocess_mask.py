@@ -24,6 +24,7 @@ def generate_fixed_mask(height, width, height_ratio, width_ratio):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--annotation_path', required=True, help='directory path for Annotation or Mask')
+    parser.add_argument('--mask_path', required=True, help='directory path for masks')
     parser.add_argument('--generate_fix_mask', action='store_true', help='generate fixed rectangular mask')
     args = parser.parse_args()
 
@@ -33,11 +34,10 @@ def main():
     
     # create a new mask folder
     if fixed:
-        mask_folder = "inputs/masks/%s_fixed"%(annotation_path.split("/")[-1])
+        mask_folder = f'{mask_path}_fixed'
     else:
-        mask_folder = "inputs/masks/%s"%(annotation_path.split("/")[-1])
+        mask_folder = f'{mask_path}'
     
-    img_folder = "inputs/videos/%s"%(annotation_path.split("/")[-1])
     pathlib.Path(mask_folder).mkdir(parents=True, exist_ok=True)
     
     # write black and white masks
