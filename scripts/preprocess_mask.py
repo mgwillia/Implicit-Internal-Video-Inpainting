@@ -30,6 +30,7 @@ def main():
 
     fixed = args.generate_fix_mask 
     annotation_path = args.annotation_path
+    mask_path = args.mask_path
     annotation_list = sorted(glob.glob("%s/*"%annotation_path))
     
     # create a new mask folder
