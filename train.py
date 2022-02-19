@@ -11,9 +11,9 @@ from loss import ambiguity_loss, stable_loss
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Get Features')
-    parser.add_argument('--log-dir', default=3.0, type=float, help='path for logs')
-    parser.add_argument('--dir-video', default=3.0, type=float, help='path to video')
-    parser.add_argument('--dir-mask', default=3.0, type=float, help='path to masks')
+    parser.add_argument('--log-dir', type=str, help='path for logs')
+    parser.add_argument('--dir-video', type=str, help='path to video')
+    parser.add_argument('--dir-mask', type=str, help='path to masks')
     args = parser.parse_args()
     # read config 
     FLAGS = Config('config/train.yml')
