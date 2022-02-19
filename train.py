@@ -3,14 +3,23 @@ import tensorflow as tf
 from tensorflow import keras
 import tensorflow_addons as tfa
 
+import argparse
 import data.dataloader as dl 
 from config.config import Config
 from model.inpaint_model import RefineModel, BaseModel, StackModel
 from loss import ambiguity_loss, stable_loss
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Get Features')
+    parser.add_argument('--log-dir', default=3.0, type=float, help='path for logs')
+    parser.add_argument('--dir-video', default=3.0, type=float, help='path to video')
+    parser.add_argument('--dir-mask', default=3.0, type=float, help='path to masks')
+    args = parser.parse_args()
     # read config 
     FLAGS = Config('config/train.yml')
+    FLAGS.log_dir = args.log_dir
+    FLAGS.dir_video = args.dir_video
+    FLAGS.dir_mask = args.dir_mask
     os.environ["CUDA_VISIBLE_DEVICES"] = FLAGS.GPU_ID 
     
     #mirrored_strategy = tf.distribute.MirroredStrategy()

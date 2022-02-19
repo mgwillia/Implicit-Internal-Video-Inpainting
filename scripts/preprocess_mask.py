@@ -8,7 +8,7 @@ def read_mask(path):
     mask = cv2.imread(path, 0)
     kernel = np.ones((12,12),np.uint8)
     mask = cv2.dilate(mask,kernel,iterations = 1)
-    mask[mask >0]=1.
+    mask[mask>0]=1.
     return mask*255 
 
 def generate_fixed_mask(height, width, height_ratio, width_ratio):
