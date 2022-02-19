@@ -23,9 +23,9 @@ def generate_fixed_mask(height, width, height_ratio, width_ratio):
 #annotation_path = "inputs/annotations/bmx-trees"
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--annotation_path', required=True, help='directory path for Annotation or Mask')
-    parser.add_argument('--mask_path', required=True, help='directory path for masks')
-    parser.add_argument('--generate_fix_mask', action='store_true', help='generate fixed rectangular mask')
+    parser.add_argument('--annotation-path', required=True, help='directory path for Annotation or Mask')
+    parser.add_argument('--mask-path', required=True, help='directory path for masks')
+    parser.add_argument('--generate-fix-mask', action='store_true', help='generate fixed rectangular mask')
     args = parser.parse_args()
 
     fixed = args.generate_fix_mask 
