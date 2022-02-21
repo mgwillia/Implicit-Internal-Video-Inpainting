@@ -41,7 +41,8 @@ if __name__ == "__main__":
     # define the optimizer
     optimizer = keras.optimizers.Adam(learning_rate=FLAGS.lr, beta_1=0.9, beta_2=0.999)
 
-    # define the dataloader 
+    # define the dataloader
+    print(f'Max Epochs: {FLAGS.max_epochs}') 
     full_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 
                                 FLAGS.batch_size, FLAGS.max_epochs, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
     #dist_full_ds = mirrored_strategy.experimental_distribute_dataset(full_ds)
