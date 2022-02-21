@@ -42,6 +42,7 @@ def main():
     pathlib.Path(mask_folder).mkdir(parents=True, exist_ok=True)
     
     # write black and white masks
+    print(annotation_list)
     for annt_path in annotation_list:
         mask_path = "%s/%s" % (mask_folder, annt_path.split("/")[-1])
         print(mask_path)
