@@ -132,20 +132,8 @@ if __name__ == "__main__":
 #        return mirrored_strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses, axis=None)
 
     # start training
+    print(f'Num parameters: {model.count_params()}')
     print(f'num possible steps:{len(full_ds)}')
-    total_parameters = 0
-    for variable in tf.trainable_variables():
-        # shape is an array of tf.Dimension
-        shape = variable.get_shape()
-        print(shape)
-        print(len(shape))
-        variable_parameters = 1
-        for dim in shape:
-            print(dim)
-            variable_parameters *= dim.value
-        print(variable_parameters)
-        total_parameters += variable_parameters
-    print(f'Num parameters: {total_parameters}')
     for step, batch_data in enumerate(full_ds):
         step = tf.convert_to_tensor(step, dtype=tf.int64)
         losses = training_step(batch_data, step)
