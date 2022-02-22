@@ -6,7 +6,7 @@
 #SBATCH --time=36:00:00
 #SBATCH --account=abhinav
 #SBATCH --qos=high
-#SBATCH --gres=gpu:p6000:1
+#SBATCH --gres=gpu:gtx1080ti:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 

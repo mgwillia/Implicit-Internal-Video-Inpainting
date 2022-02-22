@@ -7,11 +7,11 @@ dir_mask: 'inputs/masks/bmx-trees'
 
 # training
 img_shapes: [480, 800]
-batch_size: 5
-lr: 0.0002
+batch_size: 2
+lr: 0.0001
 
 max_iters: 50000
-max_epochs: 20000
+max_epochs: 600
 print_iters: 500
 summary_iters: 2500
 model_iters: 10000
