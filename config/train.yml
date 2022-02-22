@@ -6,7 +6,7 @@ dir_video: 'inputs/videos/bmx-trees'
 dir_mask: 'inputs/masks/bmx-trees'
 
 # training
-img_shapes: [320, 600]
+img_shapes: [480, 800]
 batch_size: 5
 lr: 0.0002
 
