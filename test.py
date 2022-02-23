@@ -14,7 +14,7 @@ if __name__ == "__main__":
     parser.add_argument('--test-dir', type=str, help='path for logs')
     parser.add_argument('--dir-video', type=str, help='path to video')
     parser.add_argument('--dir-mask', type=str, help='path to masks')
-    parser.add_argument('--model_restore', type=str, help='path to model')
+    parser.add_argument('--model-restore', type=str, help='path to model')
     args = parser.parse_args()
 
     FLAGS = Config('config/test.yml')
