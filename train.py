@@ -148,4 +148,5 @@ if __name__ == "__main__":
 
         #if step >= FLAGS.max_iters:
         #    break
+    model.save_weights(f'{FLAGS.log_dir}/checkpoint_final')
     print(f'finished! ran {step} steps')
