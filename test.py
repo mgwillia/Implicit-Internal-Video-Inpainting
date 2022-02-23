@@ -14,12 +14,14 @@ if __name__ == "__main__":
     parser.add_argument('--test-dir', type=str, help='path for logs')
     parser.add_argument('--dir-video', type=str, help='path to video')
     parser.add_argument('--dir-mask', type=str, help='path to masks')
+    parser.add_argument('--model_restore', type=str, help='path to model')
     args = parser.parse_args()
 
     FLAGS = Config('config/test.yml')
     FLAGS.test_dir = args.test_dir
     FLAGS.dir_video = args.dir_video
     FLAGS.dir_mask = args.dir_mask
+    FLAGS.model_restore = args.model_restore
     os.environ["CUDA_VISIBLE_DEVICES"]= FLAGS.GPU_ID
     test_dir = FLAGS.test_dir  
     pathlib.Path(test_dir).mkdir(parents=True, exist_ok=True)
