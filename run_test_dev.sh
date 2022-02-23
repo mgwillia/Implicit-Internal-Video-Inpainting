@@ -31,5 +31,5 @@ for FOLDER in ${DAVIS_FOLDERS[@]}; do
     #srun bash -c "python train.py --log-dir logs/$FOLDER --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/$FOLDER;"
     srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/$FOLDER \
                     --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/$FOLDER \
-                    --model_restore: '/vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_final';"
+                    --model-restore: /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_final;"
 done
