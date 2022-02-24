@@ -1,14 +1,14 @@
 GPU_ID: '0' 
 model_restore: '' 
 
-log_dir: exp/logs/bmx-trees
-dir_video: 'inputs/videos/bmx-trees' 
-dir_mask: 'inputs/masks/bmx-trees'
+log_dir: ''
+dir_video: '' 
+dir_mask: ''
 
 # training
 img_shapes: [480, 800]
-batch_size: 2
-lr: 0.0001
+batch_size: 5
+lr: 0.0002
 
 max_iters: 50000
 max_epochs: 20000 # TODO: change back to 600
