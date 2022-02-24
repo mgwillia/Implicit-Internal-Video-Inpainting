@@ -35,7 +35,6 @@ if __name__ == "__main__":
             model = StackModel()
 
     model.load_weights(FLAGS.model_restore)
-    print(model.summary())
     test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
 
     @tf.function
