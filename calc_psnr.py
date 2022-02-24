@@ -12,7 +12,7 @@ transform = transforms.Compose([transforms.CenterCrop((480, 800)), transforms.To
 psnr_list = []
 for image_name in images_list:
     gt_image = transform(Image.open(os.path.join(gt_path, image_name)).convert("RGB"))
-    inpaint_image = transform(Image.open(os.path.join(inpaint_path, image_name)).convert("RGB"))
+    inpaint_image = transform(Image.open(os.path.join(inpaint_path, image_name.replace('000', '00'))).convert("RGB"))
     l2_loss = F.mse_loss(inpaint_image, gt_image, reduction='none')
     psnr = -10 * torch.log10(l2_loss.flatten(start_dim=1).mean(1) + 1e-15)
     psnr_list.append(psnr)
