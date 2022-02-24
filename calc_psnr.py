@@ -5,7 +5,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 
 gt_path = '/fs/vulcan-projects/action_augment_hao/gnerv/data/DAVIS/JPEGImages/480p/blackswan'
-inpaint_path = '/vulcanscratch/mgwillia/Implicit-Internal-Video_Inpainting/results/blackswan'
+inpaint_path = '/vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/blackswan'
 
 images_list = os.listdir(gt_path)
 transform = transforms.Compose([transforms.CenterCrop((480, 800)), transforms.ToTensor()])
