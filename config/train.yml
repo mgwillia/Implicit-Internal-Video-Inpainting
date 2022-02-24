@@ -6,7 +6,7 @@ dir_video: ''
 dir_mask: ''
 
 # training
-img_shapes: [480, 800]
+img_shapes: [320, 600]
 batch_size: 5
 lr: 0.0002
 
