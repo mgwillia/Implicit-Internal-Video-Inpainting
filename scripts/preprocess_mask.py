@@ -16,9 +16,10 @@ def generate_fixed_mask(height, width, height_ratio, width_ratio):
     h_start = int((1-height_ratio) / 2.0 * height)
     h_end = int(h_start + height_ratio * height) 
     w_start = int((1-width_ratio) / 2.0 * width)
-    w_end = int(w_start + width_ratio * width) 
-    #return mask[h_start:h_end,w_start:w_end]*255 # or is it the other way around???
-    return mask*255
+    w_end = int(w_start + width_ratio * width)
+    print(mask.shape, h_start, w_start)
+    return mask[h_start:h_end,w_start:w_end]*255 # or is it the other way around???
+    #return mask*255
 
 
 #annotation_path = "inputs/annotations/bmx-trees"
