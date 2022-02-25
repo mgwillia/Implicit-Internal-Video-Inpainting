@@ -6,7 +6,7 @@ dir_video: 'inputs/videos/bmx-trees'
 dir_mask: 'inputs/masks/bmx-trees'
 
 
-img_shapes: [480, 800]
+img_shapes: [360, 600]
 coarse_only: False 
 use_refine: True 
 padding: 'SAME'
