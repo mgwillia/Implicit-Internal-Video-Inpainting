@@ -138,7 +138,7 @@ if __name__ == "__main__":
         losses = training_step(batch_data, step)
 
         if step % FLAGS.print_iters == 0:
-            print("Step:", step, "Loss", losses)
+            print("Step:", step, "Loss", losses, flush=True)
 
         if step % FLAGS.summary_iters == 0:
             writer.flush()
