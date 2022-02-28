@@ -8,7 +8,7 @@ gt_path = '/fs/vulcan-projects/action_augment_hao/gnerv/data/DAVIS/JPEGImages/48
 inpaint_path = '/vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/blackswan'
 
 images_list = os.listdir(gt_path)
-transform = transforms.Compose([transforms.Resize((360, 600)), transforms.ToTensor()])
+transform = transforms.Compose([transforms.Resize((320, 600)), transforms.ToTensor()])
 psnr_list = []
 for image_name in images_list:
     gt_image = transform(Image.open(os.path.join(gt_path, image_name)).convert("RGB"))

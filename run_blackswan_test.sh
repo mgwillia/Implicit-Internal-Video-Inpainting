@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=iivi
-#SBATCH --output=outfiles/iivi.out.%j
-#SBATCH --error=outfiles/iivi.out.%j
+#SBATCH --job-name=blackswan
+#SBATCH --output=outfiles/blackswan.out.%j
+#SBATCH --error=outfiles/blackswan.out.%j
 #SBATCH --time=36:00:00
 #SBATCH --account=abhinav
 #SBATCH --partition=scavenger
