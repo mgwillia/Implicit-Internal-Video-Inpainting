@@ -47,7 +47,7 @@ def main():
     for annt_path in annotation_list:
         mask_path = "%s/%s" % (mask_folder, annt_path.split("/")[-1])
         if fixed:
-            mask = generate_fixed_mask(480, 952, 0.25, 0.25)
+            mask = generate_fixed_mask(320, 600, 0.25, 0.25)
         else:
             mask = read_mask(annt_path)
         cv2.imwrite(mask_path, mask)    
