@@ -14,7 +14,7 @@ max_iters: 50000
 max_epochs: 20000 # TODO: change back to 600
 print_iters: 500
 summary_iters: 2500
-model_iters: 10000
+model_iters: 2500
 
 
 # Network
