@@ -5,8 +5,7 @@
 #SBATCH --error=outfiles/iivi.out.%j
 #SBATCH --time=36:00:00
 #SBATCH --account=abhinav
-#SBATCH --partition=scavenger
-#SBATCH --qos=scavenger
+#SBATCH --qos=high
 #SBATCH --gres=gpu:gtx1080ti:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
