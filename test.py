@@ -35,13 +35,15 @@ if __name__ == "__main__":
             model = StackModel()
 
     print(FLAGS.model_restore)
-    model.load_weights(FLAGS.model_restore)
+    load_status = model.load_weights(FLAGS.model_restore)
+    load_status.assert_consumed()
     test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
 
     @tf.function
     def testing_step(batch_data):
         batch_pos = batch_data[0]
         mask = batch_data[1]
+        out_mask = tf.io.encode_jpeg(tf.cast((mask[0] + 1) / 2.0 * 255, tf.uint8), format='rgb')
         mask = tf.cast(tf.cast(mask, tf.bool), tf.float32)
         batch_incomplete = batch_pos*(1.-mask)
         xin = batch_incomplete
@@ -60,17 +62,19 @@ if __name__ == "__main__":
         batch_complete = tf.cast(batch_complete[0], tf.uint8)
         out_image = tf.io.encode_jpeg(batch_complete, format='rgb')
         out_gt = tf.io.encode_jpeg(tf.cast((batch_pos[0] + 1) / 2.0 * 255, tf.uint8), format='rgb')
-        return out_image, out_gt, loss1, loss2
+        return out_image, out_gt, out_mask, loss1, loss2
 
 
     for step, batch_data in enumerate(test_ds):
         print(step)
         filepath = "%s/%04d.jpg" % (test_dir, step)
+        maskpath = "%s/%04d_mask.jpg" % (test_dir, step)
 
-        out_image, out_gt, loss1, loss2 = testing_step(batch_data)
+        out_image, out_gt, out_mask, loss1, loss2 = testing_step(batch_data)
         print(f'Coarse loss: {loss1}')
         print(f'Fine loss: {loss2}')
         if (step == 0):
             print(model.summary())
 
         tf.io.write_file(filepath, out_image)
+        tf.io.write_file(maskpath, out_mask)
