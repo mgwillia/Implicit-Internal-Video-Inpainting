@@ -51,24 +51,25 @@ if __name__ == "__main__":
             x2 = model(x, mask)
         else:
             x1, x2 = model(x, mask)
-        #batch_complete = x2*mask + batch_incomplete*(1.-mask)
-        batch_complete = x1#*mask + batch_incomplete*(1.-mask)
-        print(f'Coarse loss: {tf.reduce_mean(tf.abs(batch_pos - x1)*(1-mask))}')
-        print(f'Fine loss: {tf.reduce_mean(tf.abs(batch_pos - x2)*(1-mask))}')
+        batch_complete = x2#*mask + batch_incomplete*(1.-mask)
+        loss1 = tf.reduce_mean(tf.abs(batch_pos - x1)*(1-mask))
+        loss2 = tf.reduce_mean(tf.abs(batch_pos - x2)*(1-mask))
 
         # write image
         batch_complete = (batch_complete + 1) / 2.0 * 255
         batch_complete = tf.cast(batch_complete[0], tf.uint8)
         out_image = tf.io.encode_jpeg(batch_complete, format='rgb')
         out_gt = tf.io.encode_jpeg(tf.cast((batch_pos[0] + 1) / 2.0 * 255, tf.uint8), format='rgb')
-        return out_image, out_gt
+        return out_image, out_gt, loss1, loss2
 
 
     for step, batch_data in enumerate(test_ds):
         print(step)
         filepath = "%s/%04d.jpg" % (test_dir, step)
 
-        out_image, out_gt = testing_step(batch_data)
+        out_image, out_gt, loss1, loss2 = testing_step(batch_data)
+        print(f'Coarse loss: {loss1}')
+        print(f'Fine loss: {loss2}')
         if (step == 0):
             print(model.summary())
 
