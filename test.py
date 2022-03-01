@@ -34,6 +34,7 @@ if __name__ == "__main__":
         else: 
             model = StackModel()
 
+    print(FLAGS.model_restore)
     model.load_weights(FLAGS.model_restore)
     test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
 
@@ -50,6 +51,8 @@ if __name__ == "__main__":
             x2 = model(x, mask)
         else:
             x1, x2 = model(x, mask)
+        print(tf.reduce_mask(mask))
+        print(tf.reduce_mean(mask))
         batch_complete = x2*mask + batch_incomplete*(1.-mask)
 
         # write image
