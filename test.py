@@ -34,7 +34,6 @@ if __name__ == "__main__":
         else: 
             model = StackModel()
 
-    FLAGS.model_restore = 'exp/logs/bmx-trees/checkpoint_50000.index'
     print(FLAGS.model_restore)
     load_status = model.load_weights(FLAGS.model_restore)
     load_status.assert_consumed()
