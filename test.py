@@ -51,8 +51,6 @@ if __name__ == "__main__":
             x2 = model(x, mask)
         else:
             x1, x2 = model(x, mask)
-        print(tf.reduce_max(mask))
-        print(tf.reduce_mean(mask))
         batch_complete = x2*mask + batch_incomplete*(1.-mask)
 
         # write image
