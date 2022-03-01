@@ -43,7 +43,7 @@ if __name__ == "__main__":
     def testing_step(batch_data):
         batch_pos = batch_data[0]
         mask = batch_data[1]
-        out_mask = tf.io.encode_jpeg(tf.cast((mask[0] + 1) / 2.0 * 255, tf.uint8), format='grayscale')
+        out_mask = tf.io.encode_jpeg(tf.cast(mask[0] * 255, tf.uint8), format='grayscale')
         mask = tf.cast(tf.cast(mask, tf.bool), tf.float32)
         batch_incomplete = batch_pos*(1.-mask)
         xin = batch_incomplete
