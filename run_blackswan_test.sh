@@ -26,9 +26,6 @@ srun bash -c "ls /scratch0/mgwillia/DAVIS;"
 srun bash -c "hostname;"
 for FOLDER in ${DAVIS_FOLDERS[@]}; do
     srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_0;"
-    srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_2500;"
-    srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_5000;"
-    srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_7500;"
     srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_10k;"
     srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_20k;"
     srun bash -c "mkdir -p /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_30k;"
@@ -40,15 +37,6 @@ for FOLDER in ${DAVIS_FOLDERS[@]}; do
     srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_0 \
                     --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
                     --model-restore /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_0.index;"
-    srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_2500 \
-                    --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
-                    --model-restore /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_2500.index;"
-    srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_5000 \
-                    --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
-                    --model-restore /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_5000.index;"
-    srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_7500 \
-                    --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
-                    --model-restore /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_7500.index;"
     srun bash -c "python test.py --test-dir /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/${FOLDER}_10k \
                     --dir-video /scratch0/mgwillia/DAVIS/$FOLDER --dir-mask /scratch0/mgwillia/DAVIS_MASKS/${FOLDER}_fixed \
                     --model-restore /vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/logs/$FOLDER/checkpoint_10000.index;"

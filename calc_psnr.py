@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 
 gt_path = '/fs/vulcan-projects/action_augment_hao/gnerv/data/DAVIS/JPEGImages/480p/blackswan'
 
-for epochs in ['0', '2500', '5000', '7500', '10k']:
+for epochs in ['0', '10k', '20k', '30k', '40k', '50k']:
     inpaint_path = f'/vulcanscratch/mgwillia/Implicit-Internal-Video-Inpainting/results/blackswan_{epochs}/'
 
     images_list = os.listdir(gt_path)
