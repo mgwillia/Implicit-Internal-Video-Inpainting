@@ -34,9 +34,10 @@ if __name__ == "__main__":
         else: 
             model = StackModel()
 
-    #print(FLAGS.model_restore)
-    #load_status = model.load_weights(FLAGS.model_restore)
-    #load_status.assert_consumed()
+    FLAGS.model_restore = 'exp/logs/bmx-trees/checkpoint_50000.index'
+    print(FLAGS.model_restore)
+    load_status = model.load_weights(FLAGS.model_restore)
+    load_status.assert_consumed()
     test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
 
     @tf.function
