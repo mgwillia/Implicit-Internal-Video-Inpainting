@@ -51,7 +51,10 @@ if __name__ == "__main__":
             x2 = model(x, mask)
         else:
             x1, x2 = model(x, mask)
-        batch_complete = x2#*mask + batch_incomplete*(1.-mask)
+        #batch_complete = x2*mask + batch_incomplete*(1.-mask)
+        batch_complete = x1#*mask + batch_incomplete*(1.-mask)
+        print(tf.reduce_mean(tf.abs(batch_pos - x1)*(1-mask)))
+        print(tf.reduce_mean(tf.abs(batch_pos - x2)*(1-mask)))
 
         # write image
         batch_complete = (batch_complete + 1) / 2.0 * 255
