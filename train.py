@@ -145,6 +145,7 @@ if __name__ == "__main__":
 
         if step % FLAGS.model_iters == 0:
             model.save_weights("%s/checkpoint_%d"%(FLAGS.log_dir, step.numpy()))
+            model.save("%s/checkpoint_%d"%(FLAGS.log_dir, step.numpy()))
 
         if step >= FLAGS.max_iters:
             break
