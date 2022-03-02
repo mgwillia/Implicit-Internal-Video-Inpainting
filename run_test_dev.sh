@@ -12,7 +12,7 @@
 
 module load cuda/11.0.3
 
-DAVIS_FOLDERS=("bike-packing", "blackswan", "breakdance", "cows", "camel", "dance-twirl", "goat", "loading", "kite-surf", "paragliding-launch", "scooter-black")
+DAVIS_FOLDERS=("bike-packing" "blackswan" "breakdance" "cows" "camel" "dance-twirl" "goat" "loading" "kite-surf" "paragliding-launch" "scooter-black")
 
 srun bash -c "mkdir -p /scratch0/mgwillia/DAVIS;"
 srun bash -c "mkdir -p /scratch0/mgwillia/DAVIS_ANNOS;"
