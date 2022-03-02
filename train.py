@@ -188,7 +188,7 @@ if __name__ == "__main__":
         if step % FLAGS.model_iters == 0:
             model.save_weights("%s/checkpoint_%d"%(FLAGS.log_dir, step.numpy()))
 
-        if step >= FLAGS.max_iters:
+        if step >= FLAGS.max_iters or cur_epoch > 3005:
             break
 
     model.save_weights(f'{FLAGS.log_dir}/checkpoint_final')
