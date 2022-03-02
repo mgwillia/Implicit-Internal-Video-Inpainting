@@ -23,6 +23,8 @@ if __name__ == "__main__":
     FLAGS.dir_video = args.dir_video
     FLAGS.dir_mask = args.dir_mask
     FLAGS.test_dir = args.test_dir
+    test_dir = FLAGS.test_dir  
+    pathlib.Path(test_dir).mkdir(parents=True, exist_ok=True)
     os.environ["CUDA_VISIBLE_DEVICES"] = FLAGS.GPU_ID 
     
     #mirrored_strategy = tf.distribute.MirroredStrategy()
@@ -127,34 +129,6 @@ if __name__ == "__main__":
                     tf.summary.scalar('loss', loss, step=step)
         
         return loss
-    
-
-#    @tf.function
-#    def distributed_train_step(dataset_inputs, step):
-#        per_replica_losses = mirrored_strategy.experimental_run_v2(training_step, args=(dataset_inputs, step,))
-#        return mirrored_strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses, axis=None)
-
-    # start training
-    print(f'num possible steps:{len(full_ds)}')
-    for step, batch_data in enumerate(full_ds):
-        step = tf.convert_to_tensor(step, dtype=tf.int64)
-        losses = training_step(batch_data, step)
-
-        if step % FLAGS.print_iters == 0:
-            print("Step:", step, "Loss", losses, flush=True)
-
-        if step % FLAGS.summary_iters == 0:
-            writer.flush()
-
-        if step % FLAGS.model_iters == 0:
-            model.save_weights("%s/checkpoint_%d"%(FLAGS.log_dir, step.numpy()))
-
-        if step >= FLAGS.max_iters:
-            break
-    model.save_weights(f'{FLAGS.log_dir}/checkpoint_final')
-    print(f'finished! ran {step} steps')
-
-    test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
 
     @tf.function
     def testing_step(batch_data):
@@ -179,18 +153,45 @@ if __name__ == "__main__":
         out_image = tf.io.encode_jpeg(batch_complete, format='rgb')
         out_gt = tf.io.encode_jpeg(tf.cast((batch_pos[0] + 1) / 2.0 * 255, tf.uint8), format='rgb')
         return out_image, out_gt, loss1, loss2
+    
+    # start training
+    test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
+    checkpoint_steps = []
+    checkpoint_epochs = [0, 1000, 2000, 3000]
+    for checkpoint_epoch in checkpoint_epochs:
+        checkpoint_steps.append(checkpoint_epoch * len(test_ds) // FLAGS.batch_size)
+    print(f'num possible steps:{len(full_ds)}')
+    for step, batch_data in enumerate(full_ds):
+        cur_epoch = step * FLAGS.batch_size // len(test_ds)
+        if step in checkpoint_steps:
+            test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
+            for test_step, test_batch_data in enumerate(test_ds):
+                filepath = "%s/%04d_%04d.jpg" % (test_dir, cur_epoch, test_step)
+
+                out_image, out_gt, loss1, loss2 = testing_step(test_batch_data)
+                print(f'Coarse loss: {loss1}')
+                print(f'Fine loss: {loss2}')
+                if (test_step == 0):
+                    print(model.summary())
+
+                tf.io.write_file(filepath, out_image)
+
+        step = tf.convert_to_tensor(step, dtype=tf.int64)
+        losses = training_step(batch_data, step)
+
+        if step % FLAGS.print_iters == 0:
+            print("Step:", step, "Loss", losses, flush=True)
+
+        if step % FLAGS.summary_iters == 0:
+            writer.flush()
+
+        if step % FLAGS.model_iters == 0:
+            model.save_weights("%s/checkpoint_%d"%(FLAGS.log_dir, step.numpy()))
+
+        if step >= FLAGS.max_iters:
+            break
+
+    model.save_weights(f'{FLAGS.log_dir}/checkpoint_final')
+    print(f'finished! ran {step} steps')
 
 
-    test_dir = FLAGS.test_dir  
-    pathlib.Path(test_dir).mkdir(parents=True, exist_ok=True)
-    for step, batch_data in enumerate(test_ds):
-        print(step)
-        filepath = "%s/%04d.jpg" % (test_dir, step)
-
-        out_image, out_gt, loss1, loss2 = testing_step(batch_data)
-        print(f'Coarse loss: {loss1}')
-        print(f'Fine loss: {loss2}')
-        if (step == 0):
-            print(model.summary())
-
-        tf.io.write_file(filepath, out_image)
