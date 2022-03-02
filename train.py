@@ -2,6 +2,7 @@ import os
 import tensorflow as tf
 from tensorflow import keras
 import tensorflow_addons as tfa
+import pathlib
 
 import argparse
 import data.dataloader as dl 
@@ -14,12 +15,14 @@ if __name__ == "__main__":
     parser.add_argument('--log-dir', type=str, help='path for logs')
     parser.add_argument('--dir-video', type=str, help='path to video')
     parser.add_argument('--dir-mask', type=str, help='path to masks')
+    parser.add_argument('--test-dir', type=str, help='path to result images')
     args = parser.parse_args()
     # read config 
     FLAGS = Config('config/train.yml')
     FLAGS.log_dir = args.log_dir
     FLAGS.dir_video = args.dir_video
     FLAGS.dir_mask = args.dir_mask
+    FLAGS.test_dir = args.test_dir
     os.environ["CUDA_VISIBLE_DEVICES"] = FLAGS.GPU_ID 
     
     #mirrored_strategy = tf.distribute.MirroredStrategy()
@@ -151,3 +154,44 @@ if __name__ == "__main__":
             break
     model.save_weights(f'{FLAGS.log_dir}/checkpoint_final')
     print(f'finished! ran {step} steps')
+
+    test_ds = dl.build_dataset_video(FLAGS.dir_video, FLAGS.dir_mask, FLAGS.dir_mask, 1, 1, FLAGS.img_shapes[0], FLAGS.img_shapes[1])
+
+    @tf.function
+    def testing_step(batch_data):
+        batch_pos = batch_data[0]
+        mask = batch_data[1]
+        mask = tf.cast(tf.cast(mask, tf.bool), tf.float32)
+        batch_incomplete = batch_pos*(1.-mask)
+        xin = batch_incomplete
+ 
+        x = tf.concat([xin, mask], axis=3)
+        if FLAGS.coarse_only:
+            x2 = model(x, mask)
+        else:
+            x1, x2 = model(x, mask)
+        batch_complete = x2#*mask + batch_incomplete*(1.-mask)
+        loss1 = tf.reduce_mean(tf.abs(batch_pos - x1)*(1-mask))
+        loss2 = tf.reduce_mean(tf.abs(batch_pos - x2)*(1-mask))
+
+        # write image
+        batch_complete = (batch_complete + 1) / 2.0 * 255
+        batch_complete = tf.cast(batch_complete[0], tf.uint8)
+        out_image = tf.io.encode_jpeg(batch_complete, format='rgb')
+        out_gt = tf.io.encode_jpeg(tf.cast((batch_pos[0] + 1) / 2.0 * 255, tf.uint8), format='rgb')
+        return out_image, out_gt, loss1, loss2
+
+
+    test_dir = FLAGS.test_dir  
+    pathlib.Path(test_dir).mkdir(parents=True, exist_ok=True)
+    for step, batch_data in enumerate(test_ds):
+        print(step)
+        filepath = "%s/%04d.jpg" % (test_dir, step)
+
+        out_image, out_gt, loss1, loss2 = testing_step(batch_data)
+        print(f'Coarse loss: {loss1}')
+        print(f'Fine loss: {loss2}')
+        if (step == 0):
+            print(model.summary())
+
+        tf.io.write_file(filepath, out_image)
