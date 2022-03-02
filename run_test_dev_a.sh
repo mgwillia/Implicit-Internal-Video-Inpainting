@@ -1,18 +1,19 @@
 #!/bin/bash
 
-#SBATCH --job-name=iivi
-#SBATCH --output=outfiles/iivi.out.%j
-#SBATCH --error=outfiles/iivi.out.%j
+#SBATCH --job-name=iivi_a
+#SBATCH --output=outfiles/iivi_a.out.%j
+#SBATCH --error=outfiles/iivi_a.out.%j
 #SBATCH --time=36:00:00
 #SBATCH --account=abhinav
-#SBATCH --qos=high
+#SBATCH --partition=scavenger
+#SBATCH --qos=scavenger
 #SBATCH --gres=gpu:gtx1080ti:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 
 module load cuda/11.0.3
 
-DAVIS_FOLDERS=("bike-packing" "blackswan" "breakdance" "cows" "camel" "dance-twirl" "goat" "loading" "kite-surf" "paragliding-launch" "scooter-black")
+DAVIS_FOLDERS=("bike-packing" "blackswan" "breakdance")
 
 srun bash -c "mkdir -p /scratch0/mgwillia/DAVIS;"
 srun bash -c "mkdir -p /scratch0/mgwillia/DAVIS_ANNOS;"
